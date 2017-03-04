@@ -1,0 +1,9 @@
+.iframeContainer {
+    height: 100% !important;
+    display: block !important;
+}
+
+#theInnerContentFrame {
+    background-color: transparent;
+    border-style: none;
+}

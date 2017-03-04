@@ -1,0 +1,10 @@
+.carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      /*width: 70%;*/
+      margin: auto;
+  }
+p, h1, h2, h3, h4, h5, h6, input, li {
+    color: #001f3a !important;
+
+    font-family: Verdana, "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif !important;
+}

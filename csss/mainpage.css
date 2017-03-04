@@ -1,0 +1,126 @@
+.aibody {
+    background: url('../images/theBackgroundOld.jpg') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    /*background-size:  cover;*/
+	 height: 100%;
+	 margin: 0px auto;
+	 padding: 0px;
+	 /*position: relative;*/
+}
+html {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow-x: hidden;
+	background-size: cover;
+	/*position: relative;*/
+}
+
+.extendedNavbarBrand{
+	/*padding: 10px;*/
+	/*vertical-align:middle;*/
+	margin: 25px 25px;
+	/*background-color: transparent !important;*/
+	color: rgb(205, 205, 205);
+}
+.extendedNavbarBrand:hover{
+	color:white;
+	text-decoration: none;
+	text-shadow: 0px 0px 5px rgb(187, 187, 187);
+}
+
+.extendedBadge{
+	margin-left: 10px;
+}
+.dropdown-menu>li>a{
+	white-space:nowrap;
+	width: auto;
+}
+.extendedDropdown {
+	/*padding: 0px 20px !important;*/
+	width: auto !important;
+}
+.extendedHeader {
+    /*padding-bottom: 9px;*/
+    margin: 10px auto;
+    border-bottom: 1px solid #eee;
+    /*height: 10%;*/
+}
+
+.extendedHeader>header>h1 {
+    text-align: center;
+}
+
+#hiddenCharacter {
+    display: none;
+    position: fixed;
+    bottom: -80px;
+    left: 100px;
+    z-index:1000;
+}
+
+#theLogo {
+    width: 6%;
+	 display: inline;
+    height: 6%;
+    margin: 3px;
+    float: left;
+}
+
+.ExtendedNav>li {
+    border-right: 1px solid rgb(207, 83, 83);
+    border-bottom: 1px solid rgb(200, 76, 76);
+    border-top: 1px solid rgb(116, 123, 125);
+    border-left: 1px solid rgb(116, 123, 125);
+    padding: 0px 8px !important;
+    margin: 0px !important;
+}
+
+.ExtendedNav>li:active {
+    border-right: 1px solid rgb(16, 12, 101);
+    border-bottom: 1px solid rgb(28, 35, 189);
+}
+
+.ExtendedNav>li:hover {
+    box-shadow: 0px 2px 5px rgb(200, 68, 45);
+}
+
+/*a {
+    cursor: grab !important;
+}*/
+
+#InnerContentDIV {
+    position: relative;
+    border: 1px solid gainsboro;
+    background-color: transparent;
+}
+
+/**
+ * CSSReset.com - How To Keep Footer At Bottom of Page with CSS
+ *
+ * Original Tutorial: http://www.cssreset.com/2010/css-tutorials/how-to-keep-footer-at-bottom-of-page-with-css/
+ * License: Free - do whatever you like with it! Credit and linkbacks much appreciated.
+ *
+ * NB: Make sure the value for 'padding-bottom' on #content is equal to or greater than the height of #footer.
+ */
+
+
+
+ /*Opera Fix*/
+ .aibody:before {/* thanks to Maleika (Kohoutec)*/
+ /*content:"";*/
+ /*background-size: cover;*/
+ height:100%;
+ float:left;
+ width:0;
+ margin-top:-32767px;/* thank you Erik J - negate effect of float*/
+ }
+
+
+.wrapper {
+	min-height:100%;
+	position:relative;
+}

@@ -1,0 +1,6 @@
+.newsBlock{
+	background-color: transparent;
+	border: 1px solid gainsboro;
+	position: relative;
+	border-bottom-right-radius: 50px;
+}
