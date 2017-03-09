@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="ru" >
 <head>
-    <title>the Застройщик</title>
+    <title>the university</title>
 
     <!-- <script src = "https://www.youtube.com/iframe_api"></script> -->
     <link rel="stylesheet" href="csss/sidebar.css">
