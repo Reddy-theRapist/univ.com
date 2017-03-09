@@ -5,27 +5,30 @@
  * Date: 04.03.2017
  * Time: 4:39
  */
+require 'models/model_Table.php';
 
 class Controller_Labs8 Extends Controller_Base {
 
     // шаблон
     public $layouts = "skeleton";
     public $twitterUser;
+    public $data;
     // главный экшен
     // если в url нет явно указанного экшена, то по дефолту вызывается index
     function index()
     {
-        $this->twitterUser=new model_TwitterUser();
-        if (!is_empty($_COOKIE['twitter']))
-            $this->twitterUser;
+        $demo = new Table("demo_table","demo_db");
 
+        $this->data=$demo->GetAllRows();
+        $this->template->vars('data',$this->data);
 
-        // здесь можно описать образщение к нужной модели
-        // $obj = Model_Object();
+//        foreach ($data  as $key=>$value)
+//            $this->template->vars($key,$value);
 
-        // передача некоторых данных в предсиавление
-        // $data = [1, 2, 3];
-        // $this->template->vars('data_name', $data');
+//        $this->twitterUser=new model_TwitterUser();
+//        if (!is_empty($_COOKIE['twitter']))
+//            $this->twitterUser;
+
 
         // вызов представления по имени
         $this->template->view('index');

@@ -1,7 +1,8 @@
 <?php
 // класс роутера
 
-Class Router {
+Class Router
+{
 
 	private $path;
 	private $args = array();
@@ -23,7 +24,8 @@ Class Router {
 	}	
 	
 	// определение контроллера и экшена из урла
-	private function getController(&$file, &$controller, &$action, &$args) {
+	private function getController(&$file, &$controller, &$action, &$args)
+    {
         $route = (empty($_GET['route'])) ? '' : $_GET['route'];
 		unset($_GET['route']);
         if (empty($route))
@@ -36,11 +38,13 @@ Class Router {
 
         // Находим контроллер
         $cmd_path = $this->path;
-        foreach ($parts as $part) {
+        foreach ($parts as $part)
+        {
 			$fullpath = $cmd_path . $part;
 
 			// Проверка существования папки
-			if (is_dir($fullpath)) {
+			if (is_dir($fullpath))
+			{
 				$cmd_path .= $part . DS;
 				array_shift($parts);
 				continue;
@@ -70,15 +74,15 @@ Class Router {
         $args = $parts;
 	}
 	
-	function start() {
+	function start()
+    {
         // Анализируем путь
         $this->getController($file, $controller, $action, $args);
 		
         // Проверка существования файла, иначе 404
-        if (is_readable($file) == false) {
+        if (is_readable($file) == false)
             die('FUCK YOU');
-        }
-		
+
         // Подключаем файл
         include ($file);
 

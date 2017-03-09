@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-sm-9">
-
+        <?php include "Templates/content_block.php" ?>
     </div>
 
 </div>

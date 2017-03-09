@@ -1,13 +1,15 @@
 <?php
 // класс для подключения шаблонов и передачи данных в отображение
-Class Template {
+Class Template
+{
 
 	private $template;
 	private $controller;
 	private $layouts;
 	private $vars = array();
 	
-	function __construct($layouts, $controllerName) {
+	function __construct($layouts, $controllerName)
+    {
 		$this->layouts = $layouts;
 		$arr = explode('_', $controllerName);
 		$this->controller = strtolower($arr[1]);
@@ -21,12 +23,14 @@ Class Template {
 			trigger_error ('Unable to set var `' . $varname . '`. Already set, and overwrite not allowed.', E_USER_NOTICE);
 			return false;
 		}
+
 		$this->vars[$varname] = $value;
 		return true;
 	}
 	
 	// отображение
-	function view($name) {
+	function view($name)
+    {
 		$pathLayout = SITE_PATH . 'views' . DS . 'layouts' . DS . $this->layouts . '.php';
 		$contentPage = SITE_PATH . 'views' . DS . $this->controller . DS . $name . '.php';
 		if (file_exists($pathLayout) == false)
@@ -41,9 +45,7 @@ Class Template {
 		}
 		
 		foreach ($this->vars as $key => $value)
-		{
 			$$key = $value;
-		}
 
 		include ($pathLayout);                
 	}

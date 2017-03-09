@@ -70,3 +70,27 @@
 	position: relative;
 	bottom:10%;
 }
+
+.contentBlock{
+	width:800px;
+	height:200px;
+	border:1px solid gray;
+}
+.news_innerContent {
+	display: inline-block;
+	width:750px;
+	border:2px solid #000539;
+	border-bottom-right-radius: 5px;
+}
+.news_share{
+	display: inline-block;
+	width:50px;
+	height:50px;
+	border:2px solid #000539;
+	border-bottom-left-radius: 3px;
+}
+.news_contentBlock{
+	border:2px solid #35b0ab;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}

@@ -1,6 +1,7 @@
 ﻿<?php
 
-Abstract Class Model_Base {
+Abstract Class Model_Base
+{
 
 	protected $db;
 	protected $table;
@@ -29,7 +30,8 @@ Abstract Class Model_Base {
 	}
 	
 	// получить все записи
-	function getAllRows(){
+	function getAllRows()
+    {
 		if(!isset($this->dataResult) OR empty($this->dataResult)) return false;
 		return $this->dataResult;
 	}

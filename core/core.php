@@ -4,10 +4,12 @@ function __autoload($className) {
 	$filename = strtolower($className) . '.php';
 	// определяем класс и находим для него путь
 	$expArr = explode('_', $className);
-	if(empty($expArr[1]) OR $expArr[1] == 'Base'){
+	if(empty($expArr[1]) OR $expArr[1] == 'Base')
 		$folder = 'classes';			
-	}else{			
-		switch(strtolower($expArr[0])){
+	else
+    {
+		switch(strtolower($expArr[0]))
+        {
 			case 'controller':
 				$folder = 'controllers';	
 				break;
