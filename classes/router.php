@@ -11,7 +11,8 @@ Class Router {
 	}
 
 	// задаем путь до папки с контроллерами
-	function setPath($path) {
+	function setPath($path)
+    {
 		$path = rtrim($path, '/\\');
         $path .= DS;
 		// если путь не существует, сигнализируем об этом
@@ -25,9 +26,9 @@ Class Router {
 	private function getController(&$file, &$controller, &$action, &$args) {
         $route = (empty($_GET['route'])) ? '' : $_GET['route'];
 		unset($_GET['route']);
-        if (empty($route)) {
+        if (empty($route))
 			$route = 'index'; 
-		}
+
 		
         // Получаем части урла
         $route = trim($route, '/\\');
@@ -46,7 +47,8 @@ Class Router {
 			}
 
 			// Находим файл
-			if (is_file($fullpath . '.php')) {
+			if (is_file($fullpath . '.php'))
+			{
 				$controller = $part;
 				array_shift($parts);
 				break;
@@ -54,15 +56,15 @@ Class Router {
         }
 
 		// если урле не указан контролер, то испольлзуем поумолчанию index
-        if (empty($controller)) {
+        if (empty($controller))
 			$controller = 'index'; 
-		}
+
 
         // Получаем экшен
         $action = array_shift($parts);
-        if (empty($action)) { 
+        if (empty($action))
 			$action = 'index'; 
-		}
+
 
         $file = $cmd_path . $controller . '.php';
         $args = $parts;
@@ -74,7 +76,7 @@ Class Router {
 		
         // Проверка существования файла, иначе 404
         if (is_readable($file) == false) {
-			die ('404 Not Found');
+            die('FUCK YOU');
         }
 		
         // Подключаем файл
@@ -85,11 +87,14 @@ Class Router {
         $controller = new $class();
 		
         // Если экшен не существует - 404
-        if (is_callable(array($controller, $action)) == false) {
-			die ('404 Not Found');
+        if (is_callable(array($controller, $action)) == false)
+        {
+//            die('file='.$file);
+            include('controllers/404.php');
+            $controller=new Controller_404();
+            $controller->index();
+//            die("double FUCK YOU ");
         }
-
-        // Выполняем экшен
-        $controller->$action();
+        else $controller->$action();
 	}
 }
