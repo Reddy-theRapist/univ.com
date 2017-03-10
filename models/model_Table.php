@@ -37,7 +37,7 @@ class Table
         {
            $DBH=new PDO("mysql:host=".$this->db_host.";dbname=".$this->dbname,$this->db_user,$this->db_password);
             $DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+            $DBH->query( "SET CHARSET utf8" );
            return 1;
         }
         catch (Exception $e)
