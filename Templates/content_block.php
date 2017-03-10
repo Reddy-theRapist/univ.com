@@ -1,17 +1,18 @@
 <?php foreach ($data as $row):?>
-<div class="news_contentBlock">
-    <div class=".contentHeader">
-        <p>Захуячено в
-            <?php
-            $date = DateTime::createFromFormat('Y-m-d G:i:s', $row["publication_date"]);
-            $date=$date->format('d/m/Y G:i:s');
-            echo $date;?></p>
+<hr/>
+    <div style="margin: 5px;">
+    <div>
+        <p><span class="label label-default">
+            Захуячено в <?= DateTime::createFromFormat('Y-m-d G:i:s', $row["publication_date"])->format('d/m/Y G:i:s');?>
+             by <?= $row['author'];?>
+        </span></p>
+        <p> ТЕМА: <b> <span class="label label-primary"> <?= $row['subject'];?> </span></b></p>
     </div>
-    <div class="news_innerContent">
+    <div class="well-lg news_contentBlock">
         <p><?= $row['content']?></p>
     </div>
     <div class="news_share">
-        <button class="btn-info" title="захуячить твит"><span style="width: 30px; height: 40px;" class="glyphicon glyphicon-retweet"></span></button>
+        <a href="https://twitter.com/share" title="Захуячить твит" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
 </div>
 <?php endforeach; ?>

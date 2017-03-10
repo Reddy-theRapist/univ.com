@@ -9,6 +9,9 @@
 	height: 100%;
 }
 
+#theContainer{
+    height:800px;
+}
 
 .activeNBB{
 	box-shadow: 0px 2px 15px rgb(189, 84, 33);
@@ -79,17 +82,17 @@
 .news_innerContent {
 	display: inline-block;
 	width:95%;
-	border:2px solid #000539;
+	border:1px solid #000539;
 	border-bottom-right-radius: 5px;
 }
 .news_share{
-	display: inline-block;
-	width:5%;
-	height:10%;
-	border:2px solid #000539;
+	display: inline-block !important;
 	border-bottom-left-radius: 3px;
 }
 .news_contentBlock{
+    display: inline-block !important;
+    position: relative;
+    width:85%;
 	border:2px solid #35b0ab;
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;

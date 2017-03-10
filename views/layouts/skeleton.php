@@ -35,7 +35,7 @@
     <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
     <script src="j-scripts/DatabaseProcessingLogic.js"></script>
     <script src="j-scripts/form_handling.js"></script>
-    <link rel="stylesheet" href="../csss/Normalize.css" />
+    <link rel="stylesheet" href="csss/Normalize.css" />
 
 </head>
 
@@ -68,7 +68,7 @@
                     <li id="mainpage"><a href="index">Главная</a></li>
                     <li id="news"><a href="news">Новости</a></li>
                     <li id="labs" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> &lt;?php LABS(&$n);&gt;<span class="caret"></span> </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> &lt;?php ?&gt;<span class="caret"></span> </a>
                         <ul class="dropdown-menu extendedDropdown">
                             <li><a href="labs8"> LABS(8) </a></li>
 <!--                            <li><a href="regexps.php"> 5L </a></li>-->
