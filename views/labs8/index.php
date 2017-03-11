@@ -10,9 +10,8 @@
         <br>
         <div class="input-group extendedUL">
             <span class="input-group-btn">
-                <button class="btn btn-primary" type="button" onclick="">
-                    Зайти в твиттер <span class="glyphicon glyphicon-retweet"></span>
-			    </button>
+                <a class="btn btn-primary" href="twitter_auth">Зайти в твиттер <span class="glyphicon glyphicon-retweet"></span> </a>
+
 			</span>
         </div>
     </div>

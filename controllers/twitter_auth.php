@@ -5,6 +5,7 @@
  * Date: 11.03.2017
  * Time: 0:51
  */
+session_start();
 $oauth_nonce = sha1(random_bytes(32));
 
 $post_data=array();
