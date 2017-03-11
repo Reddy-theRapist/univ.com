@@ -9,11 +9,10 @@
         <!-- </nav> -->
         <br>
         <div class="input-group extendedUL">
-            <input type="text" class="form-control" placeholder="Поиск по сайту..">
             <span class="input-group-btn">
-          <button class="btn btn-default" type="button">
-            <span class="glyphicon glyphicon-search"></span>
-			</button>
+                <button class="btn btn-primary" type="button" onclick="">
+                    Зайти в твиттер <span class="glyphicon glyphicon-retweet"></span>
+			    </button>
 			</span>
         </div>
     </div>

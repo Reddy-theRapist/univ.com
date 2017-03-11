@@ -1,6 +1,6 @@
 <?php foreach ($data as $row):?>
 <hr/>
-    <div style="margin: 5px;">
+    <div style="margin: 5px;" id="<?= $row['subject'].' '.$row['publication_date']?>">
     <div>
         <p><span class="label label-default">
             Захуячено в <?= DateTime::createFromFormat('Y-m-d G:i:s', $row["publication_date"])->format('d/m/Y G:i:s');?>
