@@ -84,11 +84,16 @@ class TwitterAuth
 
         //curl не парсит oauth_token в отдельный элемент массива, хотя в респонсе он есть
         #region hide
-        $ch= curl_init(self::URL_REQUEST_TOKEN);
+        $ch= curl_init();
         curl_setopt_array($ch, array(
+            CURLOPT_URL=>self::URL_REQUEST_TOKEN,
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_NOBODY => 1,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_HEADER => 1,
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query(array(
+            CURLOPT_POSTFIELDS => http_build_query( array (
                 'oauth_callback' => urlencode($this->_url_callback),
                 'oauth_consumer_key' => $this->_consumer_key,
                 'oauth_nonce' => $this->_oauth["nonce"],
@@ -113,7 +118,6 @@ class TwitterAuth
             $_SESSION['oauth_token_secret'] = $this->_oauth['token_secret'] = $result['oauth_token_secret'];
             $_SESSION['twitter_auth_passed']=1;
         }
-        die(print_r($response));
     }
 
 
