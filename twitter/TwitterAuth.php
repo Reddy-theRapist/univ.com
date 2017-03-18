@@ -53,7 +53,7 @@ class TwitterAuth
 
         // ПОРЯДОК ПАРАМЕТРОВ ДОЛЖЕН БЫТЬ ИМЕННО ТАКОЙ!
         // Т.е. сперва oauth_callback -> oauth_consumer_key -> ... -> oauth_version.
-        $oauth_base_text = "GET&";
+        $oauth_base_text = "POST&";
         $oauth_base_text .= urlencode(self::URL_REQUEST_TOKEN)."&";
         $oauth_base_text .= urlencode("oauth_callback=".urlencode($this->_url_callback)."&");
         $oauth_base_text .= urlencode("oauth_consumer_key=".$this->_consumer_key."&");
@@ -73,30 +73,39 @@ class TwitterAuth
         $url = self::URL_REQUEST_TOKEN;
         $url .= '?oauth_callback='.urlencode($this->_url_callback);
         $url .= '&oauth_consumer_key='.$this->_consumer_key;
-        $url .= '&oauth_nonce='.$this->_oauth['nonce'];
+    $url .= '&oauth_nonce='.$this->_oauth['nonce'];
         $url .= '&oauth_signature='.urlencode($signature);
         $url .= '&oauth_signature_method=HMAC-SHA1';
         $url .= '&oauth_timestamp='.$this->_oauth['timestamp'];
         $url .= '&oauth_version=1.0';
 
         // Выполняем запрос
-        $response = file_get_contents($url);
+//        $response = file_get_contents($url);
 
         //curl не парсит oauth_token в отдельный элемент массива, хотя в респонсе он есть
         #region hide
-//        $ch = curl_init();
-//        curl_setopt ($ch, CURLOPT_URL, $url);
-//        curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 20);
-//        curl_setopt($ch, CURLOPT_NOBODY, 1);
-//        curl_setopt($ch, CURLOPT_HEADER, 1);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $ch= curl_init(self::URL_REQUEST_TOKEN);
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query(array(
+                'oauth_callback' => urlencode($this->_url_callback),
+                'oauth_consumer_key' => $this->_consumer_key,
+                'oauth_nonce' => $this->_oauth["nonce"],
+                'oauth_signature' => urlencode($signature),
+                'oauth_signature_method'=>'HMAC-SHA1',
+                'oauth_timestamp' => $this->_oauth["timestamp"],
+                'oauth_version'=>'1.0'))));
+        $response = curl_exec($ch);
+        curl_close($ch);
 
-//        $response = curl_exec($ch);
-//        curl_close($ch);
         #endregion
-
         // Парсим строку ответа
         parse_str($response, $result);
+        preg_match('/oauth_token=[^&]*/', $response, $matches);
+        $result["oauth_token"] = str_replace("oauth_token=", "", $matches[0]);
+
+
         // Запоминаем в сессию
         if ($result['oauth_token']!=''&&$result['oauth_token_secret']!='')
         {
@@ -104,6 +113,7 @@ class TwitterAuth
             $_SESSION['oauth_token_secret'] = $this->_oauth['token_secret'] = $result['oauth_token_secret'];
             $_SESSION['twitter_auth_passed']=1;
         }
+        die(print_r($response));
     }
 
 
