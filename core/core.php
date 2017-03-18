@@ -35,7 +35,8 @@
 
 
 //грят, __autoload устарел. на замену ему мона вот это:
-spl_autoload_register(function ($className) {
+spl_autoload_register(function ($className)
+{
     // Получаем путь к файлу из имени класса
     $filename = strtolower($className) . '.php';
     // определяем класс и находим для него путь
@@ -67,3 +68,16 @@ spl_autoload_register(function ($className) {
 
     // подключаем файл с классом
 });
+
+//spl_autoload_register(function ($className)
+//{
+//    // Получаем путь к файлу из имени класса
+//    if (strpos(strtolower($className),"twitter")!==false)
+//        $file = SITE_PATH."twitter".DS."TwitterAuth.php";
+//
+//    // проверяем наличие файла
+//    if (file_exists($file))
+//        include ($file);
+//    else die("чот не нашёл хуйни");
+//    // подключаем файл с классом
+//});

@@ -13,17 +13,30 @@ class Controller_News Extends Controller_Base {
 
     // главный экшен
     // если в url нет явно указанного экшена, то по дефолту вызывается index
-    function index() {
+    function index()
+    {
 
-        // здесь можно описать образщение к нужной модели
-        // $obj = Model_Object();
+        if (!isset($_COOKIE["testingCookies"]))
+            setcookie("testingCookies","cookies are working", time()+3600,'/','www.univ.com',false,true);
+        else $this->template->vars('cookies',$_COOKIE["testingCookies"]);
 
-        // передача некоторых данных в предсиавление
-        // $data = [1, 2, 3];
-        // $this->template->vars('data_name', $data');
+        if (!isset($_COOKIE["testingRawCookies"]))
+            setrawcookie("testingRawCookies",rawurlencode("rawcookiesareworking"), time()+3600,'/','www.univ.com',false,true);
+        else $this->template->vars('raw_cookies',$_COOKIE["testingRawCookies"]);
 
-        // вызов представления по имени
+        $this->drop_session();
         $this->template->view('index');
+    }
+
+    function drop_session()
+    {
+        session_start();
+        unset($_SESSION["denied"]);
+        unset($_SESSION["oauth_token"]);
+        unset($_SESSION["oauth_token_secret"]);
+        unset($_SESSION["twitter_auth_passed"]);
+        unset($_GET["denied"]);
+
     }
 
 }

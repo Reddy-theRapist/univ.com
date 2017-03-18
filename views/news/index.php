@@ -19,6 +19,21 @@
     </div>
 
     <div class="col-sm-9">
+        <?php if (isset($cookies)): ?>
+        <p> <?= $cookies ?> </p>
+        <?php else:?>
+        <p> нету куков</p>
+        <?php endif; ?>
+        <hr/>
+        <?php if (isset($raw_cookies)): ?>
+            <p> <?= $raw_cookies ?> </p>
+        <?php else:?>
+            <p> нету и сырых куков</p>
+        <?php endif; ?>
+
+
+
+
         <div class="newsBlock">
             <h3 >Сегодня: </h3>
             <hr/>
