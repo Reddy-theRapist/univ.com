@@ -69,40 +69,30 @@ class TwitterAuth
         // Формируем oauth_signature
         $signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
 
-        // Формируем GET-запрос
-        $url = self::URL_REQUEST_TOKEN;
-        $url .= '?oauth_callback='.urlencode($this->_url_callback);
-        $url .= '&oauth_consumer_key='.$this->_consumer_key;
-    $url .= '&oauth_nonce='.$this->_oauth['nonce'];
-        $url .= '&oauth_signature='.urlencode($signature);
-        $url .= '&oauth_signature_method=HMAC-SHA1';
-        $url .= '&oauth_timestamp='.$this->_oauth['timestamp'];
-        $url .= '&oauth_version=1.0';
+        $postfields = 'oauth_callback='.urlencode($this->_url_callback);
+        $postfields .= '&oauth_consumer_key='.$this->_consumer_key;
+        $postfields.= '&oauth_nonce='.$this->_oauth['nonce'];
+        $postfields.= '&oauth_signature='.urlencode($signature);
+        $postfields.= '&oauth_signature_method=HMAC-SHA1';
+        $postfields.= '&oauth_timestamp='.$this->_oauth['timestamp'];
+        $postfields.= '&oauth_version=1.0';
 
-        // Выполняем запрос
-//        $response = file_get_contents($url);
-
-        //curl не парсит oauth_token в отдельный элемент массива, хотя в респонсе он есть
-        #region hide
         $ch= curl_init();
+
+        //александр, в твоём случае SSL_VERIFY=false нужны. я просто сделал поумнее, я добавил сертификаты для апача в папку
+        //гайд, как это сделать по уму здеся: http://stackoverflow.com/a/32112981/7162511
+        //файл с норм сертификатами прикреплю к репозиторию в misc
         curl_setopt_array($ch, array(
             CURLOPT_URL=>self::URL_REQUEST_TOKEN,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_NOBODY => 1,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_HEADER => 1,
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query( array (
-                'oauth_callback' => urlencode($this->_url_callback),
-                'oauth_consumer_key' => $this->_consumer_key,
-                'oauth_nonce' => $this->_oauth["nonce"],
-                'oauth_signature' => urlencode($signature),
-                'oauth_signature_method'=>'HMAC-SHA1',
-                'oauth_timestamp' => $this->_oauth["timestamp"],
-                'oauth_version'=>'1.0'))));
+            CURLOPT_POSTFIELDS=>$postfields
+        ));
         $response = curl_exec($ch);
+//        $bullshit=curl_error($ch)."<br/>".curl_errno($ch)."<hr/>".$response."<hr/>".curl_getinfo($ch)."<hr/>";
         curl_close($ch);
+//        die($bullshit);
 
         #endregion
         // Парсим строку ответа

@@ -29,6 +29,7 @@ class Controller_Labs8 Extends Controller_Base
     function index()
     {
         session_start();
+        $this->drop_session();
         $demo = new Table("demo_table","demo_db");
 
         $this->data=$demo->GetAllRows();
@@ -82,7 +83,7 @@ class Controller_Labs8 Extends Controller_Base
 
     function drop_session()
     {
-        session_start();
+//        session_start();
         unset($_SESSION["denied"]);
         unset($_SESSION["oauth_token"]);
         unset($_SESSION["oauth_token_secret"]);
