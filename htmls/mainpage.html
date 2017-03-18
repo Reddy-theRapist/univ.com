@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru" >
+<head>
+	<title>the Застройщик</title>
+
+	<!-- <script src = "https://www.youtube.com/iframe_api"></script> -->
+	<link rel="stylesheet" href="../csss/sidebar.css">
+	<link rel="stylesheet" href="../csss/common.css">
+	<link rel="stylesheet" href="../csss/mainpage.css">
+	<link rel="stylesheet" href="../csss/footers.css">
+	<link rel="stylesheet" href="../csss/main.css">
+	<link rel="stylesheet" href="../csss/news.css">
+	<link rel="stylesheet" href="../csss/services.css">
+	<link rel="stylesheet" href="../csss/objects.css">
+	<link href="../images/logo.ico" rel="icon" type="image/gif">
+	<script src="../j-scripts/aScript.js"></script>
+	<meta charset="utf-8" />
+	<!-- <meta http-equiv="Cache-Control" content="no-cache"> -->
+	<!-- <meta http-equiv="Cache-Control" content="private"> -->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
+	<link rel="stylesheet" href="../csss/Normalize.css" />
+</head>
+
+<body class="aibody" onload="initializeShit();">
+	<div class="container wrapper">
+		<!-- HeADER BLOCK BEGIN -->
+		<div class="extendedHeader">
+			<img src="../images/cropped logo.png" onclick="hereComesTheBrekotkin()" id="theLogo" />
+			<header>
+				<h1>The Застройщик</h1>
+			</header>
+		</div>
+		<!-- HEADER BLOCK END  -->
+		<!--  -->
+		<!-- HORIZONTAL NAVBAR BEGIN  -->
+		<nav class="navbar navbar-inverse container" id="start">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarStuff">
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+						<a href="#" type="button" class="navbar-brand" onclick="setActiveButton('mainpage'); getPageContent('../htmls/main.html','Главная'); return false;">The Застройщик</a>
+					</div>
+
+					<div class="container-fluid collapse navbar-collapse" id="navbarStuff">
+						<ul class="nav navbar-nav ExtendedNav">
+							<li id="mainpage"><a href="#" onclick="setActiveButton('mainpage'); getPageContent('../htmls/main.html', 'Главная'); return false;">Главная</a></li>
+							<li id="news"><a href="#" onclick="setActiveButton('news'); getPageContent('../htmls/news.html', 'Новости'); return false;">Новости</a></li>
+							<li class="dropdown" id="works_dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" href="#"> Наши работы <span class="caret"></span> </a>
+								<ul class="dropdown-menu extendedDropdown">
+									<li><a href="#" onclick="setActiveButton('works_dropdown'); getPageContent('../htmls/currentobjects.html', 'Текущие работы'); return false;">Текущие работы<span class="label label-default extendedBadge">4</span></a></li>
+									<li><a href="#" onclick="setActiveButton('works_dropdown'); getPageContent('../htmls/history.html', 'Завершенные работы'); return false;">Завершенные проекты<span class="label label-default extendedBadge">16</span></a></li>
+								</ul>
+							</li>
+							<li id="services"><a href="#" onclick="setActiveButton('services'); getPageContent('../htmls/services.html', 'Услуги'); return false;">Услуги</a></li>
+							<li id="phptest"><a href="#" onclick="setActiveButton('phptest'); getPageContent('../htmls/phptest.html', 'пхптест'); return false;">&lt;?php&gt; </a></li>
+
+							<!-- <li class="divider"></li> -->
+						</ul>
+
+						<ul class="nav navbar-nav navbar-right ExtendedNav">
+							<li id="contacts"><a href="contacts.html" onclick="setActiveButton('contacts'); getPageContent('../htmls/contacts.html', 'Контакты'); return false;">Контакты</a></li>
+							<li id="phpcontacts"><a href="../phps/phpcontacts.php" onclick="setActiveButton('phpcontacts');">phpppp</a></li>
+							<li id="about" class="activeNBB"><a href="#" onclick="setActiveButton('about'); getPageContent('../htmls/about.html', 'О нас'); return false;">О нас</a></li>
+							<!-- <li class="divider"></li> -->
+						</ul>
+					</div>
+				</div>
+		</nav>
+
+		<div class="container" id="HeadingContentDIV">
+			<h4 id="HeadingContent"></h4>
+			<!-- <button type="button" onclick="testFunctionA()">clickclackA</button> -->
+			<!-- <button type="button" onclick="testFunctionB('fahk yeuh from B')">clickclackB</button> -->
+			<!-- <a href="#" onclick="testFunctionA();return false;">продлить A</a> -->
+			<!-- <a href="#" onclick="testFunctionB('fahk yeuh111 from B'); return false;">продлить B</a> -->
+		</div>
+		<!--HORIZONTAL NAVBAR END  -->
+		<!--  -->
+		<!-- CONTENT BEGIN  -->
+		<div class="container" id="InnerContentDIV">
+		</div>
+
+		<!-- CONTENT END-->
+		</div>
+
+		<!-- FOOTER BEGIN -->
+		<footer class="panel-footer container-fluid extendedFooter" id="end">
+			<div id="footerLeftDiv">
+				<p>Строим дома такие большие прям ващпе.</p>
+				<p> Контакты:<br/>123-456; 234-567; </br> </p>
+				<p> Работаем пока солнце высоко.</p>
+			</div>
+			<div id="footerRightDiv">
+				<p>Карта сайта ↓</p>
+				<div class="footerDIV">
+					<a class="footerLinks" href="#" onclick="setActiveButton('main'); getPageContent('main.html', 'Главная страница');">Главная</a>
+					<a class="footerLinks" href="#" onclick="setActiveButton('news'); getPageContent('news.html', 'Новости');">Новости</a>
+				</div>
+				<div class="footerDIV">
+					<a class="footerLinks" href="#" onclick="setActiveButton('works_dropdown'); getPageContent('currentobjects.html', 'Текущие объекты');">Текущие объекты</a>
+					<a class="footerLinks" href="#" onclick="setActiveButton('works_dropdown'); getPageContent('history.html', 'Завершённые объекты');">Завершённые объекты</a>
+				</div>
+				<div class="footerDIV">
+					<a class="footerLinks" href="#"  onclick="setActiveButton('services'); getPageContent('services.html', 'Услуги');">Услуги</a>
+					<a class="footerLinks" href="#"  onclick="setActiveButton('contacts'); getPageContent('contacts.html', 'Контакты');">Контакты</a>
+					<a class="footerLinks" href="#"  onclick="setActiveButton('about'); getPageContent('about.html', 'О нас');">О нас</a>
+				</div>
+			</div>
+		</footer>
+		<!-- FOOTER END -->
+		<iframe style="display:none;" id="hiddenCharacter" width="280" height="160" src="" frameborder="0"></iframe>
+</body>
+
+</html>

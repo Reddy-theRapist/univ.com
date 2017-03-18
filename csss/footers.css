@@ -1,0 +1,53 @@
+.extendedFooter {
+    padding: 0px !important;
+    background-image: url('../images/img-noise-1920x200.png') !important;
+    background-size: cover;
+	 width:100%;
+ 	 position:relative;
+	 clear:both;
+    border: 0px 1px 1px 1px;
+    border-radius: 0px 3px 3px 3px;
+    border-color: #341058;
+    color: rgb(220, 248, 249);
+}
+
+footer>div>p {
+    display: block;
+}
+
+footer>div {
+    display: inline-block;
+}
+
+.footerDIV {
+    display: inline-block;
+    width: 30%;
+}
+
+#footerLeftDiv {
+    width: 30%;
+    position: relative;
+    margin: 10px;
+}
+
+#footerRightDiv {
+    width: 68%;
+    position: relative;
+}
+
+#footerRightDiv p {
+    text-align: center;
+}
+
+.footerLinks {
+    display: block;
+    color: rgb(255, 255, 255);
+    margin: 0px 10px 10px 10px;
+    text-align: center;
+}
+
+.footerLinks:hover {
+    text-decoration: underline;
+    color: rgb(247, 246, 240);
+    text-shadow: 5px 5px 10px rgb(255, 255, 255);
+}

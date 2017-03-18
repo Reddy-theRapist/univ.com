@@ -1,0 +1,99 @@
+<div class="row">
+	<div class="col-sm-3">
+		<h4 style="text-align:center;">Навигация</h4>
+		<!-- <nav class=""> -->
+		<!-- <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="300"> -->
+		<ul class="nav nav-pills nav-stacked">
+			<li><button class="btn btn-primary btn-block " onclick="scrollTowards('start')">В начало</button></li>
+			<li><button class="btn btn-primary btn-block " onclick="scrollTowards('contact')">Контакты</button></li>
+			<li><button class="btn btn-primary btn-block " onclick="scrollTowards('location')">Местоположение</button></li>
+			<li><button class="btn btn-primary btn-block " onclick="scrollTowards('feedback')">Форма обратной связи</button></li>
+			<li><button class="btn btn-primary btn-block " onclick="scrollTowards('end')">В конец</button></li>
+		</ul>
+		<!-- </nav> -->
+		<br/>
+		<div class="input-group">
+			<input type="text" class="form-control" placeholder="Поиск по сайту..">
+			<span class="input-group-btn">
+          <button class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-search"></span>
+			</button>
+			</span>
+		</div>
+	</div>
+
+	<div class="col-sm-9">
+		<hr />
+		<hr id="contact" />
+		<h2>Контакты:</h2>
+		<hr />
+		<div class="container">
+			<div class="col-sm-2">
+				<h4>Главный офис:</h4>
+				<p>89449445678 <span class="glyphicon glyphicon-phone"></span></p>
+				<hr/>
+			</div>
+			<div class="col-sm-2">
+				<h4>Отдел продаж</h4>
+				<p>89449445678 <span class="glyphicon glyphicon-phone"></span></p>
+				<hr/>
+			</div>
+			<div class="col-sm-2">
+				<h4>Кадровый отдел</h4>
+				<p>89449445678 <span class="glyphicon glyphicon-phone"></span></p>
+				<hr/>
+				<p>Работаем от заката до забора 400 дней в году.</p>
+			</div>
+			<hr/>
+		</div>
+		<h4>корпоративный e-mail</h4>
+		<p><span class="glyphicon glyphicon-envelope"></span> hatemailgoeshere@gmail.com</p>
+		<hr id="location" />
+		<h3>Местоположение</h3>
+		<hr />
+		<h4>Наши офисы находятся по адресам: </h4>
+		<ul>
+			<li>Ленина, 14 - главный офис <span class="glyphicon glyphicon-map-marker"></span></li>
+			<li>Республики, 62 - запасной офис <span class="glyphicon glyphicon-map-marker"></span></li>
+			<li>50 лет октября, 14 - пункт продаж <span class="glyphicon glyphicon-map-marker"></span></li>
+		</ul>
+		<button class="btn btn-primary" style="margin:5px;" onclick="getTheMap()">Показать на карте</button>
+		<div class="maps" id="ourLocation">
+		</div>
+		<hr/>
+		<h4>Если вы по какой то причине не смогли связаться с нами - заполните форму обратной связи,
+				 укажите вопрос, с которым вы хотели бы к нам обратиться, и мы обязательно с вами свяжемся </h4>
+
+		<hr/>
+		<form class="form-horizontal" id="feedback">
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="usr">Контактное лицо</label>
+				<div class="col-sm-8">
+					<input type="name" class="form-control" placeholder="Например, Диван Иванович">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="usr">Контакты:</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" placeholder="например, 89449445678">
+				</div>
+			</div>
+			<h5>Вы - ...</h5>
+			<div class="radio">
+				<label><input type="radio" value="unhappyclient" name="optradio">Сломали ногу</label>
+			</div>
+			<div class="radio">
+				<label><input type="radio" value="omgitssonic" name="optradio">Соник Икс</label>
+			</div>
+			<div class="radio">
+				<label><input type="radio" value="muney" name="optradio">Хотите предложить нам сотруничество</label>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-5">
+					<button type="submit" class="btn btn-primary" onclick="alert('Спасибо, мы обязательно с вами свяжемся.')">Отправить заявку</button>
+				</div>
+			</div>
+		</form>
+		<hr />
+	</div>
+</div>

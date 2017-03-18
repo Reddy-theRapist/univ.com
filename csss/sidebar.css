@@ -1,0 +1,79 @@
+.extendedUL{
+	/*position: relative !important;*/
+	/*height: 600px !important;*/
+	/*width: 100% !important;*/
+	/*clear: none !important;*/
+	/*margin-right: 15px !important;*/
+	/*float: left !important;*/
+	/*padding: 0px !important;*/
+
+}
+
+.test {
+	border:1px solid red;
+}
+
+.affix {
+  top: 0;
+  width: 100%;
+}
+
+.affix-top {
+  width: 100%;
+}
+
+.affix-bottom {
+  position: absolute;
+  width: 100%;
+}
+
+.fixedLeft {
+	/*float:left;*/
+	position: relative !important;
+	/*float: left !important;*/
+	width: 100%;
+	/*position: absolute;*/
+	/*height: 600px !important;*/
+	margin: 5px;
+	/*left:7.5%;*/
+	/*transform: translate(-2%, 0%) !important;*/
+}
+
+
+.extendedBtn {
+	/*display: block !important;*/
+	/*position: relative !important;*/
+	width: 100%;
+
+}
+
+.extendedBtn-top{
+	/*display: block !important;*/
+	width: 100%;
+}
+.extendedBtn-bottom{
+	/*display: block !important;*/
+	width: 100%;
+	/*position: absolute;*/
+	/*top: 0;*/
+
+}
+
+@media  screen and (min-width:1400px) {
+
+	.fixedLeft{
+		/*transform: translate(-6%, 0%) !important;*/
+	}
+}
+
+@media screen and (max-width: 767px)
+{
+  .fixedLeft{
+	  position: relative !important;
+	  /*transform: none !important;*/
+	  /*width: 100%;*/
+  }
+  .extendedUL{
+	   margin-right: 0px !important;
+  }
+}

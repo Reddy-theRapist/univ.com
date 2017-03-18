@@ -1,0 +1,10 @@
+CACHE MANIFEST
+#here u can write all files u wanna get cached by client
+#like ../theCSS.css
+# Cache manifest version 1.0
+#no cache
+
+#below is network section where specified files caching is NOT applied
+NETWORK:
+*
+#also there's FALLBACK

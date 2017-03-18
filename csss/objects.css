@@ -1,0 +1,11 @@
+.tableIframe{
+	overflow: auto;
+}
+.fixSize{
+	width: 250px !important;
+	height: 200px !important;
+}
+#objectLocation{
+	width: 600px !important;
+	height: 400px !important;
+}
