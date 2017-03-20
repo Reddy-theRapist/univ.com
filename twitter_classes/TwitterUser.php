@@ -51,8 +51,8 @@ class TwitterUser
     public $withheld_in_countries;
     public $withheld_scope;
 
-    private $AccessToken="";
-
+//    private $AccessToken="";
+    public $initialized = false;
 
 
     function CreateFromJSON($data)
@@ -67,13 +67,16 @@ class TwitterUser
                 $this->$key=$datum;
             else $mismatched[$key]=$datum;
         }
+
+        $this->initialized=true;
+
         if (count($mismatched)>0)
             return "mismatch between json data and user class definition:".print_r($mismatched, true).'<br>';
         return false;
     }
 
-    function __construct($AT)
+    function __construct()
     {
-        $this->AccessToken=$AT;
+//        $this->AccessToken=$AT;
     }
 }

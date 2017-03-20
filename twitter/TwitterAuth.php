@@ -16,19 +16,16 @@ class TwitterAuth
     const URL_ACCOUNT_DATA	= 'https://api.twitter.com/1.1/users/show.json';
 
     // Секретные ключи и строка возврата
-    private $_consumer_key = '';
-    private $_consumer_secret = '';
-    private $_url_callback = '';
+    public $_consumer_key = '';
+    public $_consumer_secret = '';
+    public $_url_callback = '';
 
     // Масив некоторых данных oauth
-    private $_oauth = array();
+    public $_oauth = array();
 
     // Идентификатор Твиттер-пользователя
-    private $_user_id = 0;
-    private $_screen_name = '';
-
-    // Текстовое сопровождение
-    private $_text_support = false;
+    public $_user_id = 0;
+    public $_screen_name = '';
 
     public function __construct($consumerkey, $consumersecret, $urlcallback)
     {
@@ -47,6 +44,43 @@ class TwitterAuth
      * Первый этап
      *
      */
+
+
+
+    private FUNCTION CURL_SEND_REQUEST($target_url, $request_type, $postfields=null, $include_header=true)
+    {
+        $ch= curl_init();
+
+        switch (strtolower($request_type))
+        {
+            case "post":
+                curl_setopt($ch,CURLOPT_POST,true);
+                curl_setopt($ch,CURLOPT_POSTFIELDS,$postfields);
+                break;
+            case "get":
+                break;
+            case "put":
+                //это вообще хуй знает зачем. не put request, а загрузка файла
+//                curl_setopt($ch,CURLOPT_PUT,true);
+                break;
+            case "delete":
+                break;
+        }
+
+
+        curl_setopt($ch, CURLOPT_URL, $target_url);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch,CURLOPT_HEADER,$include_header);
+
+        $response = curl_exec($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
+
+        if ($error)
+            return $error;
+        return $response;
+    }
+
     public function request_token()
     {
         $this->_init_oauth();
@@ -77,25 +111,10 @@ class TwitterAuth
         $postfields.= '&oauth_timestamp='.$this->_oauth['timestamp'];
         $postfields.= '&oauth_version=1.0';
 
-        $ch= curl_init();
-
-        //александр, в твоём случае SSL_VERIFY=false нужны. я просто сделал поумнее, я добавил сертификаты для апача в папку
-        //гайд, как это сделать по уму здеся: http://stackoverflow.com/a/32112981/7162511
-        //файл с норм сертификатами прикреплю к репозиторию в misc
-        curl_setopt_array($ch, array(
-            CURLOPT_URL=>self::URL_REQUEST_TOKEN,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => 1,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS=>$postfields
-        ));
-        $response = curl_exec($ch);
-//        $bullshit=curl_error($ch)."<br/>".curl_errno($ch)."<hr/>".$response."<hr/>".curl_getinfo($ch)."<hr/>";
-        curl_close($ch);
-//        die($bullshit);
-
         #endregion
         // Парсим строку ответа
+        $response=$this->CURL_SEND_REQUEST(self::URL_REQUEST_TOKEN,"post",$postfields);
+
         parse_str($response, $result);
         preg_match('/oauth_token=[^&]*/', $response, $matches);
         $result["oauth_token"] = str_replace("oauth_token=", "", $matches[0]);
@@ -104,9 +123,8 @@ class TwitterAuth
         // Запоминаем в сессию
         if ($result['oauth_token']!=''&&$result['oauth_token_secret']!='')
         {
-            $_SESSION["bitch_please1"]= $_SESSION['oauth_token'] = $this->_oauth['token'] = $result['oauth_token'];
+            $_SESSION['oauth_token'] = $this->_oauth['token'] = $result['oauth_token'];
             $_SESSION['oauth_token_secret'] = $this->_oauth['token_secret'] = $result['oauth_token_secret'];
-            $_SESSION['twitter_auth_passed']=1;
         }
     }
 
@@ -140,9 +158,9 @@ class TwitterAuth
         // Токен из ГЕТ-запроса
         $this->_oauth['verifier'] = $verifier;
 
-        // ПОРЯДОК ПАРАМЕТРОВ ДОЛЖЕН БЫТЬ ИМЕННО ТАКОЙ!
-        // Т.е. сперва oauth_callback -> oauth_consumer_key -> ... -> oauth_version.
-        $oauth_base_text = "GET&";
+        // ПОРЯДОК ПАРАМЕТРОВ ДЛЯ СИГНАТУРЫ ДОЛЖЕН БЫТЬ ИМЕННО ТАКОЙ!
+        //также их будет собирать twitter и проверять сигнатуру (но это не точно (с))
+        $oauth_base_text = "POST&";
         $oauth_base_text .= urlencode(self::URL_ACCESS_TOKEN)."&";
         $oauth_base_text .= urlencode("oauth_consumer_key=".$this->_consumer_key."&");
         $oauth_base_text .= urlencode("oauth_nonce=".$this->_oauth['nonce']."&");
@@ -159,30 +177,37 @@ class TwitterAuth
         $signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
 
         // Формируем GET-запрос
-        $url = self::URL_ACCESS_TOKEN;
-        $url .= '?oauth_nonce='.$this->_oauth['nonce'];
-        $url .= '&oauth_signature_method=HMAC-SHA1';
-        $url .= '&oauth_timestamp='.$this->_oauth['timestamp'];
-        $url .= '&oauth_consumer_key='.$this->_consumer_key;
-        $url .= '&oauth_token='.urlencode($this->_oauth['token']);
-        $url .= '&oauth_verifier='.urlencode($this->_oauth['verifier']);
-        $url .= '&oauth_signature='.urlencode($signature);
-        $url .= '&oauth_version=1.0';
+        $postfields = 'oauth_nonce='.$this->_oauth['nonce'];
+        $postfields .= '&oauth_signature_method=HMAC-SHA1';
+        $postfields .= '&oauth_timestamp='.$this->_oauth['timestamp'];
+        $postfields .= '&oauth_consumer_key='.$this->_consumer_key;
+        $postfields .= '&oauth_token='.urlencode($this->_oauth['token']);
+        $postfields .= '&oauth_verifier='.urlencode($this->_oauth['verifier']);
+        $postfields .= '&oauth_signature='.urlencode($signature);
+        $postfields .= '&oauth_version=1.0';
 
 
-        // Выполняем запрос
-        $response = file_get_contents($url);
-        // Парсим результат запроса
+        $response=$this->CURL_SEND_REQUEST(self::URL_ACCESS_TOKEN,"post",$postfields);
+
         parse_str($response, $result);
+        preg_match('/oauth_token=[^&]*/', $response, $matches);
+        $result["oauth_token"] = str_replace("oauth_token=", "", $matches[0]);
 
-        if (isset($result['oauth_token'])&&isset($result['oauth_token_secret']))
+//        return (print_r($result));
+//        die($response);
+
+        if (isset($result['oauth_token'])&&isset($result['screen_name']))
         {
         // Получаем идентификатор Твиттер-пользователя из результата запроса
-            $this->_oauth['token'] = $result['oauth_token'];
-            $this->_oauth['token_secret'] = $result['oauth_token_secret'];
+            $_SESSION["access_token"]=$this->_oauth['token'] = $result['oauth_token'];
+            $_SESSION["access_token_secret"]=$this->_oauth['token_secret'] = $result['oauth_token_secret'];
             $this->_user_id = $result['user_id'];
             $this->_screen_name = $result['screen_name'];
+
+            setcookie("screen_name",$this->_screen_name);//,time()+3600,'/','www.univ.com');//,false,true);
+            setcookie("user_id",$this->_user_id);//,time()+3600,'/','www.univ.com');//,false,true);
         }
+//        else die ("die motherfucker die motherfucker die");
 
     }
 
@@ -221,6 +246,8 @@ class TwitterAuth
 
         // Выполняем запрос
         $response = file_get_contents($url);
+//            $this->CURL_SEND_REQUEST($url,"get");
+//        die(json_decode($response));
         // Возвращаем результат
         return $response;
     }

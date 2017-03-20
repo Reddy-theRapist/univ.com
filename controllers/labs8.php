@@ -29,49 +29,55 @@ class Controller_Labs8 Extends Controller_Base
     function index()
     {
         session_start();
-        $this->drop_session();
-        $demo = new Table("demo_table","demo_db");
+        $demo = new Table("demo_table", "demo_db");
 
-        $this->data=$demo->GetAllRows();
-        $this->template->vars('data',$this->data);
+        $this->data = $demo->GetAllRows();
+        $this->template->vars('data', $this->data);
 
-        //$_GET["oauth_token"] === $_SESSION["oauth_token"]!!!
+        $this->twitterUser=new TwitterUser;
 
-        if (isset($_SESSION["twitter_auth_passed"]))
+        if (isset($_GET["denied"]))
         {
-            if (isset($_GET["denied"]))
-            {
-                $this->twitter_auth_denied = true;
-                $this->drop_session();
-            }
-            else if ($_SESSION["twitter_auth_passed"]===1)
-            {
-                if (isset($_GET["oauth_verifier"]))
-                    $_SESSION["oauth_verifier"]=$_GET["oauth_verifier"];
-                //есть $_GET["oauth_token"] и $_GET["oauth_verifier"]
-                $this->twitter_manager = new TwitterAuth(self::CONSUMER_KEY, self::CONSUMER_SECRET, self::URL_CALLBACK);
-                $this->twitter_manager->access_token($_SESSION["oauth_token"], $_SESSION["oauth_verifier"]);
-
-                $this->twitterUser = new TwitterUser();
-                $mismatchedVars = $this->twitterUser->CreateFromJSON(json_decode($this->twitter_manager->user_data()));
-
-//                $mismatchedVars = $this->twitterUser->CreateFromJSON(json_decode($this->twitter_manager->user_data()));
-//
-//
-//
-//                echo '<p>'.$this->twitterUser.'</p><hr/>'; // this is FINE
-                if ($mismatchedVars)
-                    $this->template->vars('debug', $mismatchedVars);
-                $this->template->vars('twitter_user', $this->twitterUser);
-                $this->template->vars('twitter_manager', $this->twitter_manager);
-//                $this->template->vars('debug2', $_SESSION["bitch_please1"] . " x#########x " . $_GET["oauth_token"]);
-            }
+            $this->twitter_auth_denied = true;
+            $this->drop_session();
         }
 
+        //по идее, он понадобится только 1 раз, для получения access token
+//        if (isset($_GET["oauth_verifier"]))
+//            $_SESSION["oauth_verifier"]=$_GET["oauth_verifier"];
+
+        if (isset($_SESSION["access_token"]) && isset($_SESSION["access_token_secret"]))
+        {
+            $this->twitter_manager=new TwitterAuth(self::CONSUMER_KEY, self::CONSUMER_SECRET, self::URL_CALLBACK);
+            $this->twitter_manager->initOauth($_SESSION["access_token"], $_SESSION["access_token_secret"]);
+            if (isset($_COOKIE["user_id"])&&isset($_COOKIE["screen_name"]))
+            {
+                $this->twitter_manager->_user_id=$_COOKIE["user_id"];
+                $this->twitter_manager->_screen_name=$_COOKIE["screen_name"];
+            }
+            $this->getUser();
+        }
+        else if (isset($_GET["oauth_verifier"])&&isset($_GET["oauth_token"]))
+        {
+            $this->twitter_manager = new TwitterAuth(self::CONSUMER_KEY, self::CONSUMER_SECRET, self::URL_CALLBACK);
+            $this->twitter_manager->access_token($_GET["oauth_token"], $_GET["oauth_verifier"]);
+            header("Location: labs8");
+        }
+
+        $this->template->vars('twitterUser', $this->twitterUser);
         $this->template->vars('denied',$this->twitter_auth_denied);
 
         // вызов представления по имени
         $this->template->view('index');
+    }
+
+    private function getUser()
+    {
+        $this->twitterUser = new TwitterUser($this->twitter_manager->_oauth["token"]);
+        $mismatchedVars = $this->twitterUser->CreateFromJSON(json_decode($this->twitter_manager->user_data()));
+        if ($mismatchedVars)
+            $this->template->vars('debug', $mismatchedVars);
+        $this->template->vars('twitter_manager', $this->twitter_manager);
     }
 
 
@@ -86,9 +92,10 @@ class Controller_Labs8 Extends Controller_Base
 //        session_start();
         unset($_SESSION["denied"]);
         unset($_SESSION["oauth_token"]);
+        unset($_SESSION["access_token"]);
+        unset($_SESSION["access_token_secret"]);
         unset($_SESSION["oauth_token_secret"]);
         unset($_SESSION["twitter_auth_passed"]);
         unset($_GET["denied"]);
-
     }
 }
