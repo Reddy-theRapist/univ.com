@@ -6,7 +6,7 @@
  * Time: 4:39
  */
 require 'models/model_Table.php';
-require 'twitter/TwitterAuth.php';
+require 'twitter/TwitterManager.php';
 require 'twitter_classes/TwitterUser.php';
 
 class Controller_Labs8 Extends Controller_Base
@@ -48,7 +48,7 @@ class Controller_Labs8 Extends Controller_Base
 
         if (isset($_SESSION["access_token"]) && isset($_SESSION["access_token_secret"]))
         {
-            $this->twitter_manager=new TwitterAuth(self::CONSUMER_KEY, self::CONSUMER_SECRET, self::URL_CALLBACK);
+            $this->twitter_manager=new TwitterManager(self::CONSUMER_KEY, self::CONSUMER_SECRET, self::URL_CALLBACK);
             $this->twitter_manager->initOauth($_SESSION["access_token"], $_SESSION["access_token_secret"]);
             if (isset($_COOKIE["user_id"])&&isset($_COOKIE["screen_name"]))
             {
@@ -59,7 +59,7 @@ class Controller_Labs8 Extends Controller_Base
         }
         else if (isset($_GET["oauth_verifier"])&&isset($_GET["oauth_token"]))
         {
-            $this->twitter_manager = new TwitterAuth(self::CONSUMER_KEY, self::CONSUMER_SECRET, self::URL_CALLBACK);
+            $this->twitter_manager = new TwitterManager(self::CONSUMER_KEY, self::CONSUMER_SECRET, self::URL_CALLBACK);
             $this->twitter_manager->access_token($_GET["oauth_token"], $_GET["oauth_verifier"]);
             header("Location: labs8");
         }

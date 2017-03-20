@@ -8,7 +8,7 @@
  */
 
 
-class TwitterAuth
+class TwitterManager
 {
     const URL_REQUEST_TOKEN	= 'https://api.twitter.com/oauth/request_token';
     const URL_AUTHORIZE		= 'https://api.twitter.com/oauth/authorize';

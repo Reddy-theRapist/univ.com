@@ -30,25 +30,8 @@
     </div>
 
     <div class="col-sm-9">
-
-<!--        --><?php //if (isset($_SESSION['oauth_token'])): ?>
-<!--        <p>всё ок, сейчас есть oauth_token: --><?//= $_SESSION['oauth_token'] ?><!--</p>-->
-<!--        <hr/>-->
-<!--        --><?php //else:?>
-<!--        <p>нет oauth_token</p>-->
-<!--        --><?php //endif; ?>
-<!---->
-<!--        --><?php //if (isset($_SESSION['access_token'])): ?>
-<!--            <p>всё ок, сейчас есть access_token: --><?//= $_SESSION['access_token'] ?><!--</p>-->
-<!--            <hr/>-->
-<!--        --><?php //else:?>
-<!--            <p>нет access_token</p>-->
-<!--        --><?php //endif; ?>
-
         <br/>
         <?php include "Templates/content_block.php"; ?>
-
-
     </div>
 
 </div>
