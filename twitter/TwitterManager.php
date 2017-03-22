@@ -6,15 +6,11 @@
  * Date: 16.03.2017
  * Time: 12:49
  */
+require_once "Utils.php";
 
 
 class TwitterManager
 {
-    const URL_REQUEST_TOKEN	= 'https://api.twitter.com/oauth/request_token';
-    const URL_AUTHORIZE		= 'https://api.twitter.com/oauth/authorize';
-    const URL_ACCESS_TOKEN	= 'https://api.twitter.com/oauth/access_token';
-    const URL_ACCOUNT_DATA	= 'https://api.twitter.com/1.1/users/show.json';
-
     // Секретные ключи и строка возврата
     public $_consumer_key = '';
     public $_consumer_secret = '';
@@ -40,47 +36,6 @@ class TwitterManager
         $this->_oauth["token_secret"]=$token_secret;
     }
 
-    /**
-     * Первый этап
-     *
-     */
-
-
-
-    private FUNCTION CURL_SEND_REQUEST($target_url, $request_type, $postfields=null, $include_header=true)
-    {
-        $ch= curl_init();
-
-        switch (strtolower($request_type))
-        {
-            case "post":
-                curl_setopt($ch,CURLOPT_POST,true);
-                curl_setopt($ch,CURLOPT_POSTFIELDS,$postfields);
-                break;
-            case "get":
-                break;
-            case "put":
-                //это вообще хуй знает зачем. не put request, а загрузка файла
-//                curl_setopt($ch,CURLOPT_PUT,true);
-                break;
-            case "delete":
-                break;
-        }
-
-
-        curl_setopt($ch, CURLOPT_URL, $target_url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch,CURLOPT_HEADER,$include_header);
-
-        $response = curl_exec($ch);
-        $error = curl_error($ch);
-        curl_close($ch);
-
-        if ($error)
-            return $error;
-        return $response;
-    }
-
     public function request_token()
     {
         $this->_init_oauth();
@@ -88,7 +43,7 @@ class TwitterManager
         // ПОРЯДОК ПАРАМЕТРОВ ДОЛЖЕН БЫТЬ ИМЕННО ТАКОЙ!
         // Т.е. сперва oauth_callback -> oauth_consumer_key -> ... -> oauth_version.
         $oauth_base_text = "POST&";
-        $oauth_base_text .= urlencode(self::URL_REQUEST_TOKEN)."&";
+        $oauth_base_text .= urlencode(Utils::URL_REQUEST_TOKEN)."&";
         $oauth_base_text .= urlencode("oauth_callback=".urlencode($this->_url_callback)."&");
         $oauth_base_text .= urlencode("oauth_consumer_key=".$this->_consumer_key."&");
         $oauth_base_text .= urlencode("oauth_nonce=".$this->_oauth['nonce']."&");
@@ -113,12 +68,11 @@ class TwitterManager
 
         #endregion
         // Парсим строку ответа
-        $response=$this->CURL_SEND_REQUEST(self::URL_REQUEST_TOKEN,"post",$postfields);
-
+        $response=Utils::CURL_SEND_REQUEST(Utils::URL_REQUEST_TOKEN,"post",$postfields);
+//        die($response);
         parse_str($response, $result);
         preg_match('/oauth_token=[^&]*/', $response, $matches);
         $result["oauth_token"] = str_replace("oauth_token=", "", $matches[0]);
-
 
         // Запоминаем в сессию
         if ($result['oauth_token']!=''&&$result['oauth_token_secret']!='')
@@ -128,23 +82,16 @@ class TwitterManager
         }
     }
 
-
-    /**
-     * Второй этап
-     */
     public function authorize()
     {
         // Формируем GET-запрос
-        $url = self::URL_AUTHORIZE;
+        $url = Utils::URL_AUTHORIZE;
         $url .= '?oauth_token='.$this->_oauth['token'];
 
         header('Location: '.$url.'');
     }
 
 
-    /**
-     * Третий этап
-     */
     public function access_token($token, $verifier)
     {
         $this->_init_oauth();
@@ -161,7 +108,7 @@ class TwitterManager
         // ПОРЯДОК ПАРАМЕТРОВ ДЛЯ СИГНАТУРЫ ДОЛЖЕН БЫТЬ ИМЕННО ТАКОЙ!
         //также их будет собирать twitter и проверять сигнатуру (но это не точно (с))
         $oauth_base_text = "POST&";
-        $oauth_base_text .= urlencode(self::URL_ACCESS_TOKEN)."&";
+        $oauth_base_text .= urlencode(Utils::URL_ACCESS_TOKEN)."&";
         $oauth_base_text .= urlencode("oauth_consumer_key=".$this->_consumer_key."&");
         $oauth_base_text .= urlencode("oauth_nonce=".$this->_oauth['nonce']."&");
         $oauth_base_text .= urlencode("oauth_signature_method=HMAC-SHA1&");
@@ -187,7 +134,7 @@ class TwitterManager
         $postfields .= '&oauth_version=1.0';
 
 
-        $response=$this->CURL_SEND_REQUEST(self::URL_ACCESS_TOKEN,"post",$postfields);
+        $response=Utils::CURL_SEND_REQUEST(Utils::URL_ACCESS_TOKEN,"post",$postfields);
 
         parse_str($response, $result);
         preg_match('/oauth_token=[^&]*/', $response, $matches);
@@ -211,17 +158,12 @@ class TwitterManager
 
     }
 
-
-    /**
-     * Четвертый этап. Получение данных пользователя
-     *
-     */
     public function user_data()
     {
         $this->_init_oauth();
 
         $oauth_base_text = "GET&";
-        $oauth_base_text .= urlencode(self::URL_ACCOUNT_DATA).'&';
+        $oauth_base_text .= urlencode(Utils::URL_ACCOUNT_DATA).'&';
         $oauth_base_text .= urlencode('oauth_consumer_key='.$this->_consumer_key.'&');
         $oauth_base_text .= urlencode('oauth_nonce='.$this->_oauth['nonce'].'&');
         $oauth_base_text .= urlencode('oauth_signature_method=HMAC-SHA1&');
@@ -234,7 +176,7 @@ class TwitterManager
         $signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
 
         // Формируем GET-запрос
-        $url = self::URL_ACCOUNT_DATA;
+        $url = Utils::URL_ACCOUNT_DATA;
         $url .= '?oauth_consumer_key=' . $this->_consumer_key;
         $url .= '&oauth_nonce=' . $this->_oauth['nonce'];
         $url .= '&oauth_signature=' . urlencode($signature);
@@ -245,18 +187,169 @@ class TwitterManager
         $url .= '&screen_name=' . $this->_screen_name;
 
         // Выполняем запрос
-        $response = file_get_contents($url);
-//            $this->CURL_SEND_REQUEST($url,"get");
-//        die(json_decode($response));
-        // Возвращаем результат
+//        $response = file_get_contents($url);
+       $response = Utils::CURL_SEND_REQUEST($url,"get",null,false); //doesn't work!!!
         return $response;
     }
 
+    public function getUserFollowers($user_screenName)
+    {
+        $this->_init_oauth();
 
-    /**
-     * Функция формирует oauth_nonce и oauth_timestamp
-     *
-     */
+        $oauth_base_text = "GET&";
+        $oauth_base_text .= urlencode(Utils::URL_FOLLOWERS_LIST).'&';
+        $oauth_base_text .= urlencode('oauth_consumer_key='.$this->_consumer_key.'&');
+        $oauth_base_text .= urlencode('oauth_nonce='.$this->_oauth['nonce'].'&');
+        $oauth_base_text .= urlencode('oauth_signature_method=HMAC-SHA1&');
+        $oauth_base_text .= urlencode('oauth_timestamp='.$this->_oauth['timestamp']."&");
+        $oauth_base_text .= urlencode('oauth_token='.$this->_oauth['token']."&");
+        $oauth_base_text .= urlencode('oauth_version=1.0&');
+        $oauth_base_text .= urlencode('screen_name=' . $user_screenName);
+
+        $key = $this->_consumer_secret . '&' . $this->_oauth['token_secret'];
+        $signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
+
+        // Формируем GET-запрос
+        $url = Utils::URL_FOLLOWERS_LIST;
+        $url .= '?oauth_consumer_key=' . $this->_consumer_key;
+        $url .= '&oauth_nonce=' . $this->_oauth['nonce'];
+        $url .= '&oauth_signature=' . urlencode($signature);
+        $url .= '&oauth_signature_method=HMAC-SHA1';
+        $url .= '&oauth_timestamp=' . $this->_oauth['timestamp'];
+        $url .= '&oauth_token=' . urlencode($this->_oauth['token']);
+        $url .= '&oauth_version=1.0';
+        $url .= '&screen_name=' . $user_screenName;
+
+
+        return Utils::CURL_SEND_REQUEST($url,"get",null,false);
+//        return file_get_contents($url);
+    }
+
+    //рефакторинг? ООП? кто все эти люди
+    //дублирование одного и того же кода - вот наш девиз
+    public function banUsersFollower($poorGuyID){
+        $this->_init_oauth();
+
+        $oauth_base_text = "POST&";
+        $oauth_base_text .= urlencode(Utils::URL_BLOCKS_CREATE).'&';
+        $oauth_base_text .= urlencode('oauth_consumer_key='.$this->_consumer_key.'&');
+        $oauth_base_text .= urlencode('oauth_nonce='.$this->_oauth['nonce'].'&');
+        $oauth_base_text .= urlencode('oauth_signature_method=HMAC-SHA1&');
+        $oauth_base_text .= urlencode('oauth_timestamp='.$this->_oauth['timestamp']."&");
+        $oauth_base_text .= urlencode('oauth_token='.$this->_oauth['token']."&");
+        $oauth_base_text .= urlencode('oauth_version=1.0&');
+        $oauth_base_text .= urlencode('user_id=' . $poorGuyID);
+
+        $key = $this->_consumer_secret . '&' . $this->_oauth['token_secret'];
+        $signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
+
+        $postfields = 'oauth_consumer_key=' . $this->_consumer_key;
+        $postfields .= '&oauth_nonce=' . $this->_oauth['nonce'];
+        $postfields .= '&oauth_signature=' . urlencode($signature);
+        $postfields .= '&oauth_signature_method=HMAC-SHA1';
+        $postfields .= '&oauth_timestamp=' . $this->_oauth['timestamp'];
+        $postfields .= '&oauth_token=' . urlencode($this->_oauth['token']);
+        $postfields .= '&oauth_version=1.0';
+        $postfields .= '&user_id=' . $poorGuyID;
+
+
+        return Utils::CURL_SEND_REQUEST(Utils::URL_BLOCKS_CREATE,"post",$postfields,true,true);
+    }
+
+    public function getUsersFollowings($user_screenName, $cursor, $count)
+    {
+        $this->_init_oauth();
+
+        $oauth_base_text = "GET&";
+        $oauth_base_text .= urlencode(Utils::URL_FOLLOWED_LIST).'&';
+        $oauth_base_text .= urlencode('count='.$count.'&');
+        $oauth_base_text .= urlencode('cursor='.$cursor.'&');
+        $oauth_base_text .= urlencode('oauth_consumer_key='.$this->_consumer_key.'&');
+        $oauth_base_text .= urlencode('oauth_nonce='.$this->_oauth['nonce'].'&');
+        $oauth_base_text .= urlencode('oauth_signature_method=HMAC-SHA1&');
+        $oauth_base_text .= urlencode('oauth_timestamp='.$this->_oauth['timestamp']."&");
+        $oauth_base_text .= urlencode('oauth_token='.$this->_oauth['token']."&");
+        $oauth_base_text .= urlencode('oauth_version=1.0&');
+        $oauth_base_text .= urlencode('screen_name=' . $user_screenName);
+
+        $key = $this->_consumer_secret . '&' . $this->_oauth['token_secret'];
+        $signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
+
+        // Формируем GET-запрос
+        $url = Utils::URL_FOLLOWED_LIST;
+        $url .= '?oauth_consumer_key=' . $this->_consumer_key;
+        $url .= '&oauth_nonce=' . $this->_oauth['nonce'];
+        $url .= '&oauth_signature=' . urlencode($signature);
+        $url .= '&oauth_signature_method=HMAC-SHA1';
+        $url .= '&oauth_timestamp=' . $this->_oauth['timestamp'];
+        $url .= '&oauth_token=' . urlencode($this->_oauth['token']);
+        $url .= '&oauth_version=1.0';
+        $url .= '&count=' . urlencode($count);
+        $url .= '&cursor=' . urlencode($cursor);
+        $url .= '&screen_name=' . $user_screenName;
+
+//        die($url);
+        return Utils::CURL_SEND_REQUEST($url,"get",null,false);
+    }
+
+    public function SubscribeUser($poorGuyID)
+    {
+        $this->_init_oauth();
+
+        $oauth_base_text = "POST&";
+        $oauth_base_text .= urlencode(Utils::URL_FRIENDSHIP_CREATE).'&';
+        $oauth_base_text .= urlencode('oauth_consumer_key='.$this->_consumer_key.'&');
+        $oauth_base_text .= urlencode('oauth_nonce='.$this->_oauth['nonce'].'&');
+        $oauth_base_text .= urlencode('oauth_signature_method=HMAC-SHA1&');
+        $oauth_base_text .= urlencode('oauth_timestamp='.$this->_oauth['timestamp']."&");
+        $oauth_base_text .= urlencode('oauth_token='.$this->_oauth['token']."&");
+        $oauth_base_text .= urlencode('oauth_version=1.0&');
+        $oauth_base_text .= urlencode('user_id=' . $poorGuyID);
+
+        $key = $this->_consumer_secret . '&' . $this->_oauth['token_secret'];
+        $signature = base64_encode(hash_hmac("sha1", $oauth_base_text, $key, true));
+
+        $postfields = 'oauth_consumer_key=' . $this->_consumer_key;
+        $postfields .= '&oauth_nonce=' . $this->_oauth['nonce'];
+        $postfields .= '&oauth_signature=' . urlencode($signature);
+        $postfields .= '&oauth_signature_method=HMAC-SHA1';
+        $postfields .= '&oauth_timestamp=' . $this->_oauth['timestamp'];
+        $postfields .= '&oauth_token=' . urlencode($this->_oauth['token']);
+        $postfields .= '&oauth_version=1.0';
+        $postfields .= '&user_id=' . $poorGuyID;
+
+        return Utils::CURL_SEND_REQUEST(Utils::URL_FRIENDSHIP_CREATE,"post",$postfields,true,true);
+    }
+
+    public function GetUserByScreenName($screen_name)
+    {
+        $data = array('grant_type' => 'client_credentials');
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  =>"Content-type: application/x-www-form-urlencoded;charset=UTF-8\r\n" .
+                    'Authorization: Basic ' . base64_encode(Utils::CONSUMER_KEY . ':' . Utils::CONSUMER_SECRET) . "\r\n",
+                'content' => http_build_query($data)
+            )
+        );
+        $context  = stream_context_create($opts);
+
+        $response = file_get_contents(Utils::URL_OAUTH2_TOKEN, false, $context);
+        $result = json_decode($response, true);
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'GET',
+                'header'  =>"Content-type: application/x-www-form-urlencoded;charset=UTF-8\r\n" .
+                    'Authorization: Bearer ' . $result['access_token'] . "\r\n",
+            )
+        );
+
+        $url = Utils::URL_ACCOUNT_DATA . '?screen_name=' . $screen_name;
+
+        return file_get_contents($url, false, stream_context_create($opts));;
+    }
+
     private function _init_oauth()
     {
         $this->_oauth['nonce'] = md5(uniqid(rand(), true)); // Формируем oauth_nonce

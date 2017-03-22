@@ -47,8 +47,10 @@ function getPageContent(url, newTitle){
 
 	document.getElementById('HeadingContent').innerHTML='→ '+newTitle;
 
-	$('#InnerContentDIV').fadeTo("fast",0.1,function(){
-		$('#InnerContentDIV').load(url,function(){
+	$('#InnerContentDIV').fadeTo("fast",0.1,function()
+	{
+		$('#InnerContentDIV').load(url,function()
+		{
 			$('#InnerContentDIV').fadeTo("fast",1);
 			if (url.indexOf('contacts')!=-1)
 				getTheMap();

@@ -5,7 +5,9 @@
  * Date: 17.03.2017
  * Time: 19:20
  */
-class TwitterUser
+require "twitter_model.php";
+
+class TwitterUser extends twitter_model
 {
     public $contributors_enabled;
     public $created_at;
@@ -52,28 +54,22 @@ class TwitterUser
     public $withheld_scope;
 
 //    private $AccessToken="";
-    public $initialized = false;
+//    public $initialized = false;
+    private $accessToken="";
+    public $followers=array();
+    public $followed= array();
+    public $advices=array();
 
-
-    function CreateFromJSON($data)
+    function setAccessToken($newAT)
     {
-        if (count($data)===0)
-            return null;
-
-        $mismatched =  array();
-
-        foreach ($data as $key=>$datum) {
-            if (property_exists($this,$key))
-                $this->$key=$datum;
-            else $mismatched[$key]=$datum;
+        if ($this->accessToken!=="")
+        {
+            $this->accessToken=$newAT;
+            return true;
         }
-
-        $this->initialized=true;
-
-        if (count($mismatched)>0)
-            return "mismatch between json data and user class definition:".print_r($mismatched, true).'<br>';
-        return false;
+        else return false;
     }
+
 
     function __construct()
     {

@@ -4,21 +4,15 @@
 <head>
     <title>the university</title>
 
-    <!-- <script src = "https://www.youtube.com/iframe_api"></script> -->
     <link rel="stylesheet" href="csss/sidebar.css">
     <link rel="stylesheet" href="csss/common.css">
     <link rel="stylesheet" href="csss/mainpage.css">
     <link rel="stylesheet" href="csss/footers.css">
     <link rel="stylesheet" href="csss/main.css">
     <link rel="stylesheet" href="csss/news.css">
-    <!--<link rel="stylesheet" href="../csss/services.css">-->
-    <!--<link rel="stylesheet" href="../csss/objects.css">-->
-    <script src="j-scripts/aScript.js"></script>
-    <script src="j-scripts/SubmitOrder.js"></script>
+    <script src="j-scripts/twitter_actions.js"></script>
     <link href="images/skating.png" rel="icon" type="image/gif">
     <meta charset="utf-8" />
-    <!-- <meta http-equiv="Cache-Control" content="no-cache"> -->
-    <!-- <meta http-equiv="Cache-Control" content="private"> -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"/>
@@ -33,8 +27,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript"></script>
-    <script src="j-scripts/DatabaseProcessingLogic.js"></script>
-    <script src="j-scripts/form_handling.js"></script>
     <link rel="stylesheet" href="csss/Normalize.css" />
 
 </head>
@@ -115,6 +107,11 @@
 </footer>
 <!-- FOOTER END -->
 <iframe style="display:none;" id="hiddenCharacter" width="280" height="160" src="" frameborder="0"></iframe>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </body>
 
 </html>

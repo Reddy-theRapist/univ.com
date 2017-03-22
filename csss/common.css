@@ -97,3 +97,33 @@
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
 }
+
+.twitter_user{
+	position: relative;
+	width:30%;
+	height:450px;
+	border:1px solid rgba(127,96,92,0.2);
+	margin-left: 5px;
+	display: inline-block;
+}
+
+.twitter_user > img{
+	/*position:absolute;*/
+	width:100%;
+	height:60%;
+}
+
+.twitter_user > a,button{
+	display: block;
+	width:100%;
+	align-content: center;
+	margin-top:5px;
+}
+.twitter_user > blockquote {
+	height:20%;
+	font-size: 0.85em;
+	overflow: auto;
+}
+.twitter_user>blockquote>p{
+
+}
